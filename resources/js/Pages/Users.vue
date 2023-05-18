@@ -1,24 +1,13 @@
-<script>
-export default {
-  props: { time: String},
-};
+<script setup>
+const props = defineProps({ users: Array });
 </script>
 
 <template>
-  <!-- title can be passed as prop -->
   <Head title="Users" />
   
   <h1 class="text-3xl">Users</h1>
 
-  <p>Scroll down to checkout time and preserve-scroll refresh link.</p>
-
-  <div style="margin-top: 800px;">
-    <p>Time: {{ time }}</p>
-
-    <Link
-      href="/users"
-      class="text-blue-500 hover:underline"
-      preserve-scroll
-    >Refresh</Link>
-  </div>
+  <ul>
+    <li v-for="user in users" :key="user.id" v-text="user.name"></li>
+  </ul>
 </template>
