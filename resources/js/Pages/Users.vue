@@ -5,6 +5,9 @@ export default {
 </script>
 
 <template>
+  <!-- title can be passed as prop -->
+  <Head title="Users" />
+  
   <h1 class="text-3xl">Users</h1>
 
   <p>Scroll down to checkout time and preserve-scroll refresh link.</p>

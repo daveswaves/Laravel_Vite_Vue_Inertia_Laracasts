@@ -5,13 +5,6 @@ export default {
   components: { Nav },
   
   computed: {
-    /*
-      username() returns the namespaced 'username' value,
-      set in the 'Middleware/HandleInertiaRequests.php' file.
-      Doing so makes it globally available to all pages within the project.
-      Nb. We could reference the value directly like so ('this' not required):
-      {{ $page.props.auth.user.username }}
-    */
     username() {
       return this.$page.props.auth.user.username;
     }
