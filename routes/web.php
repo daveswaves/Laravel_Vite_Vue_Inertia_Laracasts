@@ -9,14 +9,19 @@ Route::get('/', function () {
 
 Route::get('/users', function () {
   return inertia('Users', [
-    /*
-      map() doesn't work with paginate() - use through().
-      through() gets applied to the current slice of items.
-    */
-    'users' => User::paginate()->through(fn($user) => [
-      'id' => $user->id,
-      'name' => $user->name
-    ])
+    'users' => User::query()
+      ->when(Request::input('search'), function ($query, $search) {
+        $query->where('name', 'like', "%{$search}%");
+      })
+      ->paginate(10)
+      // Appends the search query to the pagination page links.
+      ->withQueryString()
+      ->through(fn($user) => [
+        'id' => $user->id,
+        'name' => $user->name,
+      ]),
+    // Search input retains its search string from page to page (pagination)
+    'filters' => request(['search'])
   ]);
 });
 
