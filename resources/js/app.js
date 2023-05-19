@@ -7,7 +7,11 @@ createInertiaApp({
   resolve: name => {
     const page = resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue'));
     page.then((module) => {
-      module.default.layout ??= Layout;
+      // module.default.layout ??= Layout;
+      if (module.default.layout === undefined) {
+        module.default.layout = Layout;
+      }
+
     });
     return page;
   },
@@ -20,8 +24,6 @@ createInertiaApp({
       .mount(el)
   },
 
-  // This title template receives titles from Home, Settings & Users.
-  // Result in the following page title:  'My App - Home', 'My App - Settings' & 'My App - Users'.
   title: title => `My App - ${title}`,
 
   progress: {

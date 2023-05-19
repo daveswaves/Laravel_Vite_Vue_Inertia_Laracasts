@@ -1,5 +1,5 @@
 <script setup>
-import { router, useForm } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3';
 
 let form = useForm({
   name: '',
