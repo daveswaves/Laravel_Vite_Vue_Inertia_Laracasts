@@ -8,7 +8,7 @@ Route::get('/', function () {
 });
 
 Route::get('/users', function () {
-  return inertia('Users', [
+  return inertia('Users/Index', [
     'users' => User::query()
       ->when(Request::input('search'), function ($query, $search) {
         $query->where('name', 'like', "%{$search}%");
@@ -23,6 +23,25 @@ Route::get('/users', function () {
     // Search input retains its search string from page to page (pagination)
     'filters' => request(['search'])
   ]);
+});
+
+Route::post('/users', function () {
+  // Validate the request
+  $atts = Request::validate([
+    'name' => 'required',
+    'email' => ['required', 'email'],
+    'password' => 'required',
+  ]);
+
+  // Create new user
+  User::create($atts);
+
+  // Redirect
+  return redirect('/users');
+});
+
+Route::get('/users/new', function () {
+  return inertia('Users/New');
 });
 
 Route::get('/settings', function () {

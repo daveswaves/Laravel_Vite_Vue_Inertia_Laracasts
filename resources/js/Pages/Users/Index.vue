@@ -1,11 +1,8 @@
 <script setup>
-import Pagination from '../Shared/Pagination.vue';
+import Pagination from '../../Shared/Pagination.vue';
 import { ref, watch } from 'vue';
 import { router } from '@inertiajs/vue3';
-/* 
-Assumes 'lodash' is installed - CHECK 'package.json'
-If debounce required, change throttle to debounce.
-*/
+
 import throttle from 'lodash/throttle';
 
 const props = defineProps({
@@ -28,9 +25,12 @@ watch(search, throttle(function (value) {
   <Head title="Users" />
   
   <div class="flex justify-between mb-6">
-    <h1 class="text-3xl">Users</h1>
+    <div class="flex items-center">
+      <h1 class="text-3xl">Users</h1>
+
+      <Link href="/users/new" class="text-blue-500 text-sm ml-3">New User</Link>
+    </div>
     
-    <!-- Filter -->
     <input v-model="search" type="text" placeholder="Search..." class="border px-2 rounded-lg">
   </div>
   
