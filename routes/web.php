@@ -9,13 +9,11 @@ Route::get('/', function () {
 
 Route::get('/users', function () {
   return inertia('Users', [
-    // 'users' => User::all()
-    /* 
-      Unlike traditional server side apps,
-      client side apps, like Vue, expose all data.
-      Use map() to only return required field(s).
+    /*
+      map() doesn't work with paginate() - use through().
+      through() gets applied to the current slice of items.
     */
-    'users' => User::all()->map(fn($user) => [
+    'users' => User::paginate()->through(fn($user) => [
       'id' => $user->id,
       'name' => $user->name
     ])
