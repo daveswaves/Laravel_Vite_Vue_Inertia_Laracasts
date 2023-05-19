@@ -1,25 +1,14 @@
 <script setup>
-import { reactive } from 'vue';
-import { router } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
 
-/* 
-  Replace: import { Inertia } from '@inertia/inertia'
-  with:    import { router } from '@inertiajs/vue3'
-
-  Use router.get() or router.post()
-  instead of Inertia.get() or Inertia.post()
-
-  https://stackoverflow.com/questions/75535328/failed-to-resolve-import-inertia-inertia-from-resources-js-pages-dashboard-v
-*/
-
-let form = reactive({
+let form = useForm({
   name: '',
   email: '',
   password: '',
 });
 
 let submit = () => {
-  router.post('/users', form);
+  form.post('/users');
 }
 </script>
 
@@ -28,7 +17,6 @@ let submit = () => {
 
   <h1 class="text-3xl">Create New User</h1>
 
-  <!-- Prevent default form submit and call submit method in script section above. -->
   <form autocomplete="off" @submit.prevent="submit" class="max-w-md mx-auto mt-8">
     
     <!-- Name -->
@@ -45,6 +33,7 @@ let submit = () => {
           rounded-md"
         required
       />
+      <div v-if="form.errors.name" v-text="form.errors.name" class="text-red-500 text-xs mt-1"></div>
     </div>
     
     <!-- Email -->
@@ -61,6 +50,7 @@ let submit = () => {
           rounded-md"
         required
       />
+      <div v-if="form.errors.email" v-text="form.errors.email" class="text-red-500 text-xs mt-1"></div>
     </div>
     
     <!-- Password -->
@@ -75,13 +65,20 @@ let submit = () => {
           p-2
           w-full
           rounded-md"
-        required
       />
+      <div v-if="form.errors.password" v-text="form.errors.password" class="text-red-500 text-xs mt-1"></div>
     </div>
     
     <!-- Submit Button -->
     <div class="mb-6">
-      <button type="submit" class="bg-blue-400 text-white rounded py-2 px-4 hover:bg-blue-500 cursor-pointer">Submit</button>
+      <button  type="submit"
+        class="rounded py-2 px-4"
+          :class="{
+            'bg-blue-400 text-white hover:bg-blue-500 cursor-pointer': !form.processing,
+            'bg-gray-400 text-gray-300 cursor-auto': form.processing
+          }"
+        :disabled="form.processing"
+      >Submit</button>
     </div>
   </form>
 </template>

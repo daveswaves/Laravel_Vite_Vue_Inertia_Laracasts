@@ -26,6 +26,9 @@ Route::get('/users', function () {
 });
 
 Route::post('/users', function () {
+  // To demo 'Submit' disabled operation
+  sleep(1);
+  
   // Validate the request
   $atts = Request::validate([
     'name' => 'required',
