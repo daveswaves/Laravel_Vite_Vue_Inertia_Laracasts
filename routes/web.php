@@ -25,9 +25,18 @@ Route::middleware('auth')->group(function () {
         ->through(fn($user) => [
           'id' => $user->id,
           'name' => $user->name,
+          /* MOD: ADDITION */
+          'can' => [
+            'edit' => Auth::user()->can('edit', $user)
+          ]
         ]),
       // Search input retains its search string from page to page (pagination)
-      'filters' => request(['search'])
+      'filters' => request(['search']),
+
+      /* MOD: ADDITION */
+      'can' => [
+        'createUser' => Auth::user()->can('create', User::class)
+      ]
     ]);
   });
   
@@ -51,7 +60,10 @@ Route::middleware('auth')->group(function () {
   
   Route::get('/users/new', function () {
     return inertia('Users/New');
-  });
+  })->middleware('can:create,App\Models\User');
+  /*
+    MOD: ->middelware() stops users accessing users/new if they manually enter URL.
+  */
   
   Route::get('/settings', function () {
     return inertia('Settings');

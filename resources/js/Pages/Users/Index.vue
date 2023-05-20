@@ -7,7 +7,9 @@ import throttle from 'lodash/throttle';
 
 const props = defineProps({
   users: Object,
-  filters: Object
+  filters: Object,
+  /* MOD: ADDITION */
+  can: Object
 });
 
 let search = ref(props.filters.search);
@@ -27,8 +29,8 @@ watch(search, throttle(function (value) {
   <div class="flex justify-between mb-6">
     <div class="flex items-center">
       <h1 class="text-3xl">Users</h1>
-
-      <Link href="/users/new" class="text-blue-500 text-sm ml-3">New User</Link>
+      <!-- MOD: Added v-if -->
+      <Link v-if="can.createUser" href="/users/new" class="text-blue-500 text-sm ml-3">New User</Link>
     </div>
     
     <input v-model="search" type="text" placeholder="Search..." class="border px-2 rounded-lg">
@@ -53,7 +55,12 @@ watch(search, throttle(function (value) {
                   </div>
                 </td>
 
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <!--
+                  MOD: Added v-if Only displays 'edit' links that current user can edit.
+                  Nb. This is currently only created randomly in UserPolicy edit method.
+                      In a real project, edit groups would need creating for individual users.
+                -->
+                <td v-if="user.can.edit" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <Link :href="`users/${user.id}/edit`" class="text-indigo-600 hover:text-indigo-900">Edit</Link>
                 </td>
               </tr>
